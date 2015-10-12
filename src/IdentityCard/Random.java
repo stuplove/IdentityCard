@@ -1,14 +1,8 @@
 package IdentityCard;
 
 public class Random {
-
 	public static void main(String[] args) throws Exception {
-
 		System.out.println("return : " + getIdentityCardId());
-		for (int i = 0; i < 100; i++) {
-			System.out.println(getIdentityCardId());
-		}
-
 	}
 
 	private static String getIdentityCardId() throws Exception {
@@ -19,9 +13,10 @@ public class Random {
 			count++;
 			// 取得隨機英文數字
 			IdentityCard = "" + getCountiesChar();
+			IdentityCard += getRandomNum(1, 2);
 
-			// 配上9碼隨機0~9數字
-			for (int i = 0; i < 9; i++) {
+			// 配上8碼隨機0~9數字
+			for (int i = 0; i < 8; i++) {
 				IdentityCard += getNum();
 			}
 		} // 驗證失敗則繼續隨機產生

@@ -8,7 +8,6 @@ public class Check {
 	static String IdentityCard = "B120863158";
 
 	public static void main(String[] args) {
-
 		String in = input();
 		if (in != null)
 			IdentityCard = in;
@@ -18,7 +17,6 @@ public class Check {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-
 	}
 
 	private static String input() {
@@ -38,12 +36,15 @@ public class Check {
 		// 對數字陣列做公式計算
 		// 判斷最後結果是否正確
 
+		if (!IdentityCard.matches("[A-Z,a-z][1,2][0-9]{8}")) {
+			throw new Exception("Error 格式不符合 ：" + IdentityCard);
+		}
+
 		int[] checkNum = new int[DecryptionNum.length];// 11
 
 		String[] identityCardStrArray = identityCard.split("");
 
-		String counties = identityCardStrArray[0];
-		Integer countiesNum = getCountiesInt(counties);
+		Integer countiesNum = getCountiesInt(identityCard.toUpperCase().charAt(0));
 		if (countiesNum == null)
 			throw new Exception("Error 請輸入大寫英文");
 
@@ -62,30 +63,26 @@ public class Check {
 
 	}
 
-	private static boolean checkMod(int[] checkNumArray, int[] xxNumArray) {
+	private static boolean checkMod(int[] checkNumArray, int[] decryptionNum) {
 		int total = 0;
 		for (int i = 0; i < checkNumArray.length; i++) {
-			total += checkNumArray[i] * xxNumArray[i];
+			total += checkNumArray[i] * decryptionNum[i];
 		}
 
 		return (total % 10) == 0;
 	}
 
-	final static String[] countiesStr = { "A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q",
-			"R", "S", "T", "U", "V", "X", "Y", "W", "Z", "I", "O" };
-	final static Map<String, Integer> countiesMap = new HashMap<String, Integer>();
+	static String countiesStr = "ABCDEFGHJKLMNPQRSTUVXYWZIO";
+	final static Map<Character, Integer> countiesMap = new HashMap<Character, Integer>();
 
 	static {
 		int start = 10;
-		int end = start + countiesStr.length - 1;
-		for (int i = start; i <= end; i++) {
-			countiesMap.put(countiesStr[i - 10], i);
-			countiesMap.put(countiesStr[i - 10].toLowerCase(), i);
-		}
+		int end = start + countiesStr.length() - 1;
+		for (int i = start; i <= end; i++) 
+			countiesMap.put(countiesStr.charAt(i - 10), i);
 	}
 
-	private static Integer getCountiesInt(String counties) {
-
+	private static Integer getCountiesInt(char counties) {
 		return countiesMap.get(counties);
 	}
 
